@@ -18,12 +18,14 @@ def sync():
     for namespace in WATCHED_NAMESPACES:
         envs = park_api.list_environments(namespace=namespace)
         for env in envs:
-            checkpoint = park_api.list_checkpoints(
+            checks = park_api.list_checkpoints(
                 namespace=namespace, environment=env
             )
-            checkpoints += checkpoint
+            for chk in checks:
+                checkpoints.append(f"{namespace}/{env}/{chk}")
     
     print(f"checkpoints: {checkpoints}")
+
 
 if __name__ == "__main__":
     sync()

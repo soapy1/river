@@ -22,3 +22,10 @@ class Park:
         response.raise_for_status()
         data = response.json()
         return data["data"]["checkpoints"]
+
+    def get_checkpoint(self, namespace: str, environment: str, checkpoint: str):
+        request_url = f"{self.url}/{namespace}/{environment}/{checkpoint}"
+        response = requests.get(request_url)
+        response.raise_for_status()
+        data = response.json()
+        return data["data"]["checkpoint_data"]
