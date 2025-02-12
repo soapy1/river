@@ -4,7 +4,7 @@ description = "Add a short description here"
 name = "canopy"
 requires-python = ">= 3.11"
 version = "0.1.0"
-dependencies = ["requests>=2.32.3,<3"]
+dependencies = ["requests>=2.32.3,<3", "pydantic>=2.10.6,<3"]
 
 [build-system]
 build-backend = "hatchling.build"

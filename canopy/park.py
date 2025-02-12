@@ -4,7 +4,10 @@ from typing import List
 
 
 class Park:
-    """API for interacting with Park backend"""
+    """API for interacting with Park backend
+    
+    In the future, we should use the Park python api
+    """
 
     def __init__(self, url: str):
         self.url = url

@@ -2,6 +2,8 @@
 
 The goal of this project is to prove out syncing environments from (park)[github.com/soapy1/park] to a volume. 
 
+Canopy will sync environments from park to a given volume, so that the latest checkpoint for an environment is always available.
+
 This can be used by applications like jupyter to provision environments.
 
 ## Running

@@ -23,6 +23,10 @@ def inspect_park_checkpoints(namespaces: List[str]) -> List[str]:
     return checkpoints
 
 
+def inspect_volume_environments():
+    pass
+
+
 def sync():
     WATCHED_NAMESPACES = os.environ.get("WATCHED_NAMESPACES")
     if WATCHED_NAMESPACES is None:
@@ -30,6 +34,7 @@ def sync():
     else:
         WATCHED_NAMESPACES = WATCHED_NAMESPACES.split(",")
 
+    # get checkpoints for all the watched namespaces
     checkpoints = inspect_park_checkpoints(WATCHED_NAMESPACES)
     print(f"checkpoints: {checkpoints}")
 
