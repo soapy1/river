@@ -5,7 +5,7 @@ from typing import Dict, List, Optional, Any
 
 from pydantic import BaseModel, Field
 
-from canopy.models.package import package
+from canopy.models import package
 
 
 class EnvironmentMetadata(BaseModel):

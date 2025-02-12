@@ -8,7 +8,11 @@ PARK_URL = os.environ.get("PARK_URL")
 TARGET_PATH = os.environ.get("TARGET_PATH")
 
 
-def inspect_park_checkpoints(namespaces: List[str]) -> List[str]:
+def inspect_park_checkpoints(namespaces: List[str], latest: bool = True) -> List[str]:
+    """Generate a list of checkpoints for all the environments
+    in the given namespace. If latest is True, only the latest
+    checkpoint is returned for each environment.
+    """
     park_api = Park(url=PARK_URL)
     checkpoints = []
     for namespace in namespaces:
@@ -35,7 +39,7 @@ def sync():
         WATCHED_NAMESPACES = WATCHED_NAMESPACES.split(",")
 
     # get checkpoints for all the watched namespaces
-    checkpoints = inspect_park_checkpoints(WATCHED_NAMESPACES)
+    checkpoints = inspect_park_checkpoints(WATCHED_NAMESPACES, latest=True)
     print(f"checkpoints: {checkpoints}")
 
 

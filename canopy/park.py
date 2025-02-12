@@ -1,11 +1,13 @@
-import json
 import requests
 from typing import List
+import yaml
+
+from canopy.models import environment
 
 
 class Park:
     """API for interacting with Park backend
-    
+
     In the future, we should use the Park python api
     """
 
@@ -26,9 +28,11 @@ class Park:
         data = response.json()
         return data["data"]["checkpoints"]
 
-    def get_checkpoint(self, namespace: str, environment: str, checkpoint: str):
+    def get_checkpoint(self, namespace: str, environment: str, checkpoint: str) -> environment.EnvironmentCheckpoint:
         request_url = f"{self.url}/{namespace}/{environment}/{checkpoint}"
         response = requests.get(request_url)
         response.raise_for_status()
         data = response.json()
-        return data["data"]["checkpoint_data"]
+        checkpoint_data = data["data"]["checkpoint_data"]
+        checkpoint_dict = yaml.load(checkpoint_data, yaml.FullLoader)
+        return environment.EnvironmentCheckpoint.model_validate_json(checkpoint_dict)
