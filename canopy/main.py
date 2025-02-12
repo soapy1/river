@@ -1,21 +1,17 @@
 import os
+from typing import List
 
 from canopy.park import Park
 
 
-def sync():
-    PARK_URL = os.environ.get("PARK_URL")
-    TARGET_PATH = os.environ.get("TARGET_PATH")
-    WATCHED_NAMESPACES = os.environ.get("WATCHED_NAMESPACES")
-    if WATCHED_NAMESPACES is None:
-        WATCHED_NAMESPACES = []
-    else:
-        WATCHED_NAMESPACES = WATCHED_NAMESPACES.split(",")
+PARK_URL = os.environ.get("PARK_URL")
+TARGET_PATH = os.environ.get("TARGET_PATH")
 
 
+def inspect_park_checkpoints(namespaces: List[str]) -> List[str]:
     park_api = Park(url=PARK_URL)
     checkpoints = []
-    for namespace in WATCHED_NAMESPACES:
+    for namespace in namespaces:
         envs = park_api.list_environments(namespace=namespace)
         for env in envs:
             checks = park_api.list_checkpoints(
@@ -23,7 +19,18 @@ def sync():
             )
             for chk in checks:
                 checkpoints.append(f"{namespace}/{env}/{chk}")
-    
+
+    return checkpoints
+
+
+def sync():
+    WATCHED_NAMESPACES = os.environ.get("WATCHED_NAMESPACES")
+    if WATCHED_NAMESPACES is None:
+        WATCHED_NAMESPACES = []
+    else:
+        WATCHED_NAMESPACES = WATCHED_NAMESPACES.split(",")
+
+    checkpoints = inspect_park_checkpoints(WATCHED_NAMESPACES)
     print(f"checkpoints: {checkpoints}")
 
 
