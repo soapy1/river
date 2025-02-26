@@ -45,7 +45,7 @@ def inspect_park_checkpoints(namespaces: List[str]) -> List[str]:
     return checkpoints
 
 
-def save_checkpoin_to_volume(checkpoints, path):
+def save_checkpoints_to_volume(checkpoints, path):
     park_api = Park(url=PARK_URL)
 
     checkpoint_files_path = f"{path}/checkpoints/"
@@ -78,7 +78,7 @@ def sync():
     # get checkpoints for all the watched namespaces
     checkpoints = inspect_park_checkpoints(WATCHED_NAMESPACES)
     print(f"checkpoints: {checkpoints}")
-    save_checkpoin_to_volume(checkpoints, target_path)
+    save_checkpoints_to_volume(checkpoints, target_path)
 
 
 if __name__ == "__main__":

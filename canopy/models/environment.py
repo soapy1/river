@@ -1,31 +1,27 @@
-# copied from https://github.com/soapy1/dof
-# in the future, we can import the dof package
+# copied from https://github.com/soapy1/fod
+# in the future, we can import the fod package
 
-from typing import Dict, List, Optional, Any
-
-from pydantic import BaseModel, Field
-
-from canopy.models import package
-
-
-class EnvironmentMetadata(BaseModel):
-    """Metadata for an environment"""
-    spec_version: str = "0.0.1"
-    platform: str
-    build_hash: str
-    channels: List[str]
-    conda_settings: Optional[Dict[str, Any]] = Field(default={})
+from pydantic import BaseModel
 
 
 class EnvironmentSpec(BaseModel):
-    """Specifies a locked environment
+    """Specifies a locked environment from pixi
+
+    spec : str
+      The pixi.toml for the environemnt
     
-    A lock exists for each platform. So to fully represent a locked environment
-    across multiple platforms you will need multiple EnvironmentSpecs.
+    lockifle : str
+      The pixi.lock for the environment
+
+    lockfile_hash : str
+      Hash for the content of the lockfile. If the lockfile hash has
+      changed, then the environment has been updated. If the spec
+      file has changed, it will cause a change in the lockfile as
+      well.
     """
-    metadata: EnvironmentMetadata
-    packages: List[package.Package]
-    env_vars: Optional[Dict[str, str]] = None
+    spec: str
+    lockfile: str
+    lockfile_hash: str
 
 
 class EnvironmentCheckpoint(BaseModel):
@@ -35,5 +31,6 @@ class EnvironmentCheckpoint(BaseModel):
     """
     environment: EnvironmentSpec
     timestamp: str
+    # TODO: how do you actually create a uuid?
     uuid: str
-    tags: List[str]
+    tags: list[str]

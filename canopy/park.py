@@ -34,5 +34,13 @@ class Park:
         response.raise_for_status()
         data = response.json()
         checkpoint_data = data["data"]["checkpoint_data"]
-        checkpoint_dict = yaml.load(checkpoint_data, yaml.FullLoader)
-        return environment_model.EnvironmentCheckpoint.model_validate(checkpoint_dict)
+        return environment_model.EnvironmentCheckpoint(
+            timestamp = checkpoint_data["timestamp"],
+            uuid = checkpoint_data["uuid"],
+            tags = checkpoint_data["tags"],
+            environment = environment_model.EnvironmentSpec(
+                spec = checkpoint_data["environment"]["spec"],
+                lockfile = checkpoint_data["environment"]["lockfile"],
+                lockfile_hash = checkpoint_data["environment"]["lockfile_hash"],
+            )
+        )
