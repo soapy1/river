@@ -19,3 +19,15 @@ $ pixi install
 $ pixi run canopy
 ```
 
+### Using docker
+
+Build the docker image:
+
+```
+$ docker build -t canopy:local .  
+```
+
+Run the image (this will sync environments to `./tmp`)
+```
+$ docker run -it  -v $PWD/tmp:/tmp/canopy  -e PARK_URL=<PARK_URL> -e WATCHED_NAMESPACES=<watchec namespace> canopy:local
+```
