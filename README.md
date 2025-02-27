@@ -31,3 +31,26 @@ Run the image (this will sync environments to `./tmp`)
 ```
 $ docker run -it  -v $PWD/tmp:/tmp/canopy  -e PARK_URL=<PARK_URL> -e WATCHED_NAMESPACES=<watchec namespace> canopy:local
 ```
+
+### In Kubernetes
+
+Canopy can be run as a cron job in kubernetes. Note, that you may need to update some config vars in the `containers` section of the cron job yaml file. In particular, `PARK_URL` and `WATCHED_NAMESPACES`.
+
+```
+$ kubectl apply -f k8/cronjob.yaml -n <namespace>
+```
+
+To see the logs
+```
+# list past jobs
+$ kubectl get jobs -n <namespace>
+NAME              COMPLETIONS   DURATION   AGE
+canopy-29011459   1/1           23s        2m9s
+canopy-29011460   1/1           3s         69s
+canopy-29011461   1/1           3s         9s
+
+# get logs for specific job
+$ kubectl logs jobs/canopy-29011459 -n dev-test
+saving checkpoint fod-demo/pixi-py/318fd971! latest: True
+saving checkpoint fod-demo/pixi-py/e8ed81a9! latest: False
+```

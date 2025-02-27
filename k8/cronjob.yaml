@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: canopy
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: canopy
+            image: scastellarin/canopy:v0.0.1
+            imagePullPolicy: IfNotPresent
+            env:
+              # TODO: update these env vars to be configurable
+              - name: PARK_URL
+                value: "http://192.168.4.70:8000"
+              - name: WATCHED_NAMESPACES
+                value: "fod-demo"
+              - name: TARGET_PATH
+                value: "/environments/data/canopy"
+            volumeMounts:
+            - name: target
+              mountPath: /environments
+          volumes:
+          - name: target
+            persistentVolumeClaim:
+              claimName: nebari-conda-store-storage  
+          restartPolicy: OnFailure
