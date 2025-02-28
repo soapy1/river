@@ -54,3 +54,19 @@ $ kubectl logs jobs/canopy-29011459 -n dev-test
 saving checkpoint fod-demo/pixi-py/318fd971! latest: True
 saving checkpoint fod-demo/pixi-py/e8ed81a9! latest: False
 ```
+
+#### Debugging with the debug-pod deployment
+
+If you are trying to debug canopy in kubernetes, you can use the `k8/debug-pod.yaml` deployment.
+
+Apply the deployemnt
+```
+$ kubectl apply -f k8/debug-pod.yaml -n <namespace>
+```
+
+Exec into the pod
+```
+$ kub exec -it canopy-76b7d65fc9-9769x -n dev-test -- /bin/bash 
+```
+
+The conda shared environment shared volume will be mounted to `/environments`. Double check with the canopy cron job definition to see where the sync path is. It'll probably be `/environments/data/canopy/checkpoints`.
