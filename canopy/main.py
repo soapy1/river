@@ -1,5 +1,4 @@
 import os
-from typing import List
 import datetime
 
 from canopy.park import Park
@@ -9,10 +8,27 @@ from canopy.data_dir import DataDir
 PARK_URL = os.environ.get("PARK_URL")
 
 
-def inspect_park_checkpoints(namespaces: List[str]) -> List[str]:
+def inspect_park_checkpoints(namespaces: list[str]) -> dict[str, dict]:
     """Generate a list of checkpoints for all the environments
-    in the given namespace. If latest is True, only the latest
-    checkpoint is returned for each environment.
+    in the given namespace. The form of the returned dict is:
+
+    checkpoint dict:
+    {
+      "created": <datetime>,
+      "fqn": <namespace>/<env>/<uuid>,
+      "checkpoint": <checkpoint data>,
+    }
+    
+
+    return dict:
+    {
+        <namespace>/<env>: {
+           "latest": {<checkpoint>},
+           "checkpoints": [<checkpoint>],
+        }
+    }
+
+    The "checkpoint" map contains all the checkpoints, including the latest one.
     """
     park_api = Park(url=PARK_URL)
     checkpoints = {}
@@ -39,6 +55,7 @@ def inspect_park_checkpoints(namespaces: List[str]) -> List[str]:
                     }
                 elif (env_timestamp > current_latest_checkpoint["latest"]["created"]):
                     checkpoints[f"{namespace}/{env}"]["latest"] = save_checkpoint
+                    checkpoints[f"{namespace}/{env}"]["checkpoints"].append(save_checkpoint)
                 else:
                     checkpoints[f"{namespace}/{env}"]["checkpoints"].append(save_checkpoint)
 
