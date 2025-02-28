@@ -1,7 +1,6 @@
 import os
 from typing import List
 import datetime
-import yaml
 
 from canopy.park import Park
 from canopy.data_dir import DataDir
