@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: canopy
+  labels:
+    app: canopy
+spec:
+  selector:
+    matchLabels:
+      app: canopy
+  template:
+    metadata:
+      labels:
+        app: canopy
+    spec:
+      containers:
+      - name: canopy
+        command: ["tail", "-f", "/dev/null"]
+        image: scastellarin/canopy:v0.0.1
+        imagePullPolicy: IfNotPresent
+        env:
+         - name: PARK_URL
+           value: "http://192.168.4.70:8000"
+         - name: WATCHED_NAMESPACES
+           value: "fod-demo"
+         - name: TARGET_PATH
+           value: "/environments/data/canopy"
+        volumeMounts:
+        - name: target
+          mountPath: /environments
+      volumes:
+      - name: target
+        persistentVolumeClaim:
+          claimName: nebari-conda-store-storage  
