@@ -10,7 +10,7 @@ spec:
         spec:
           containers:
           - name: canopy
-            image: scastellarin/canopy:v0.0.1
+            image: scastellarin/canopy:v0.0.2
             imagePullPolicy: IfNotPresent
             env:
               # TODO: update these env vars to be configurable
