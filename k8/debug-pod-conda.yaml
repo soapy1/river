@@ -1,30 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment 
 metadata:
-  name: canopy-debug
+  name: conda-debug
   labels:
-    app: canopy-debug
+    app: conda-debug
 spec:
   selector:
     matchLabels:
-      app: canopy-debug
+      app: conda-debug
   template:
     metadata:
       labels:
-        app: canopy-debug
+        app: conda-debug
     spec:
       containers:
-      - name: canopy-debug
+      - name: conda-debug
         command: ["tail", "-f", "/dev/null"]
-        image: scastellarin/canopy:v0.0.1
+        image: continuumio/miniconda3:latest 
         imagePullPolicy: IfNotPresent
-        env:
-         - name: PARK_URL
-           value: "http://192.168.4.70:8000"
-         - name: WATCHED_NAMESPACES
-           value: "fod-demo"
-         - name: TARGET_PATH
-           value: "/environments/data/canopy"
         volumeMounts:
         - name: target
           mountPath: /environments
